@@ -30,7 +30,7 @@ export const clearAll = () => {
   LocalStorageEventTarget.dispatchEvent(clearLSEvent)
 }
 
-export const BASE_URL = 'https://lucifernsz.com/PBL6-BE/public/api'
+export const BASE_URL = 'https://api.minhdeptrai.site/api/v1'
 // SEO
 const removeSpecialCharacter = (stri) => {
   return stri

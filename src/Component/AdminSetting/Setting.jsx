@@ -101,8 +101,8 @@ const AdminSetting = () => {
     setSelectedFile(null)
   }
 
-  const handleErrorFullName = (admin_fullname) => {
-    if (admin_fullname === '') {
+  const handleErrorFullName = (username) => {
+    if (username === '') {
       setErrorAdminFullName('Full name is required')
       return false
     }
@@ -188,12 +188,12 @@ const AdminSetting = () => {
       const result = await AdminAPI.getAdmin(token)
       if (!result) return
       const { data } = result
-      setAdminFullName(data.admin_fullname)
+      setAdminFullName(data.username)
       setEmail(data.email)
-      setAvatar(data.admin_avatar)
-      setAdminFullNameCard(data.admin_fullname)
+      setAvatar(data.avatarUrl)
+      setAdminFullNameCard(data.username)
       setEmailCard(data.email)
-      setImageCard(data.admin_avatar)
+      setImageCard(data.avatarUrl)
       setAdminRole(data.role_name.charAt(0).toUpperCase() + data.role_name.slice(1))
     } catch (e) {
       if (e.message.includes('401')) {
@@ -215,17 +215,17 @@ const AdminSetting = () => {
     setSubmitLoading(true)
     const formData = new FormData()
     if (typeForm === 'profile') {
-      const admin_fullname = adminFullName
+      const username = adminFullName
       const adminEmail = email
       const isValidEmail = handleErrorEmail(adminEmail)
-      const isValidFullName = handleErrorFullName(admin_fullname)
+      const isValidFullName = handleErrorFullName(username)
       if (!isValidEmail || !isValidFullName) {
         setSubmitLoading(false)
         return
       }
-      formData.append('admin_fullname', adminFullName)
+      formData.append('username', adminFullName)
       formData.append('email', adminEmail)
-      if (selectedFile) formData.append('admin_avatar', selectedFile)
+      if (selectedFile) formData.append('avatarUrl', selectedFile)
     } else {
       ChangePasswordBtnRef.current.focus()
       const current_password = currentPassword
@@ -253,9 +253,8 @@ const AdminSetting = () => {
           const profileData = {
             ...Object.fromEntries(formData),
             admin_is_admin: adminRole,
-            admin_avatar: selectedFile ? URL.createObjectURL(selectedFile) : imageCard
+            avatarUrl: selectedFile ? URL.createObjectURL(selectedFile) : imageCard
           }
-          console.log(profileData)
           setProfile(profileData)
         } else {
           setCurrentPassword('')
@@ -363,12 +362,12 @@ const AdminSetting = () => {
               <div className='w-full'>
                 <div className='AddCategoryForm__row'>
                   <div className='AddCategoryForm__group AddCategoryForm__WidthFull relative'>
-                    <label htmlFor='admin_avatar'>Avatar</label>
+                    <label htmlFor='avatarUrl'>Avatar</label>
                     <input
                       type='file'
                       accept='image/jpg, image/jpeg, image/png, image/gif, image/svg'
-                      name='admin_avatar'
-                      id='admin_avatar'
+                      name='avatarUrl'
+                      id='avatarUrl'
                       className='hidden'
                       placeholder='Choose file'
                       onChange={handleUploadAvatar}
@@ -392,7 +391,7 @@ const AdminSetting = () => {
                       >
                         <button
                           type='button'
-                          onClick={() => document.getElementById('admin_avatar').click()}
+                          onClick={() => document.getElementById('avatarUrl').click()}
                           className='setting__uploadBtn focus:outline-none focus:border-[1px] focus:border-solid focus:border-[#1d242e] [&:not(:focus)]:outline-none [&:not(:focus)]:border-[3px] [&:not(:focus)]:border-dashed [&:not(:focus)]:border-[#ebedf0] w-[160px] h-[160px]'
                           style={{
                             border: Avatar ? 'none' : dragging ? '3px dashed #1d242e' : '3px dashed #ebedf0'
@@ -438,7 +437,7 @@ const AdminSetting = () => {
                 </div>
                 <div className='AddCategoryForm__row'>
                   <div className='AddCategoryForm__group AddCategoryForm__WidthFull'>
-                    <label htmlFor='admin_fullname' className='AddCategoryForm__label'>
+                    <label htmlFor='username' className='AddCategoryForm__label'>
                       Full Name
                     </label>
                     <Tooltip
@@ -452,8 +451,8 @@ const AdminSetting = () => {
                     >
                       <input
                         type='text'
-                        name='admin_fullname'
-                        id='admin_fullname'
+                        name='username'
+                        id='username'
                         className='AddCategoryForm__input setting__input'
                         placeholder='Lam Nhat Minh'
                         value={adminFullName}

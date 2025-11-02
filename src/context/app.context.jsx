@@ -1,5 +1,5 @@
 import { clearProfile, getAccessToken, getProfile, saveProfile } from '../until/index.js'
-import { createContext, useState, useContext } from 'react'
+import { createContext, useState, useContext, useEffect } from 'react'
 // Context API
 
 const initialAppContext = {
@@ -13,26 +13,50 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(initialAppContext.isAuthenticated)
   const [isProfile, setIsProfile] = useState(initialAppContext.profile)
   const [checkedProducts, setCheckedProducts] = useState(initialAppContext.checkedProducts)
+  // === Sync với localStorage ===
+  useEffect(() => {
+    const token = getAccessToken()
+    const savedProfile = getProfile()
+
+    setIsAuthenticated(Boolean(token))
+    setIsProfile(savedProfile)
+  }, [])
+
+  // Watch localStorage changes (multi-tab sync)
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const token = getAccessToken()
+      const savedProfile = getProfile()
+      setIsAuthenticated(Boolean(token))
+      setIsProfile(savedProfile)
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [])
+
   const login = (user, token) => {
-    localStorage.setItem('accesstoken', token) // Lưu token vào localStorage
-    setIsAuthenticated(true) // Cập nhật trạng thái xác thực
+    localStorage.setItem('accesstoken', token)
+    setIsAuthenticated(true)
+    saveProfile(user)
     setIsProfile(user)
   }
 
   const logout = () => {
-    localStorage.removeItem('accesstoken') // Xóa token khỏi localStorage
+    localStorage.removeItem('accesstoken')
     clearProfile()
-    setIsAuthenticated(false) // Cập nhật trạng thái xác thực
+    setIsProfile(null)
+    setIsAuthenticated(false)
   }
 
-  const setProfile = (profile) => {
-    saveProfile(profile)
-    setIsProfile(profile)
-  }
   const reset = () => {
     setCheckedProducts([])
     setIsProfile(null)
     setIsAuthenticated(false)
+  }
+  const setProfile = (data) => {
+    saveProfile(data)
+    setIsProfile(data)
   }
 
   return (

@@ -9,8 +9,3 @@ test('full app rendering/navigating', async () => {
   // render app trong terminal
   render(<App />, { wrapper: BrowserRouter })
 })
-// test('renders learn react link', () => {
-//   render(<App />)
-//   const linkElement = screen.getByText(/learn react/i)
-//   expect(linkElement).toBeInTheDocument()
-// })

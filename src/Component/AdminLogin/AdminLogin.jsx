@@ -17,7 +17,6 @@ export default function AdminLogin() {
 
   const [isEmailFocus, setIsEmailFocus] = useState(false)
   const [isPasswordFocus, setIsPasswordFocus] = useState(false)
-  const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [formType, setFormType] = useState('login')
   const [loading, setLoading] = useState(false)
 
@@ -33,6 +32,9 @@ export default function AdminLogin() {
   const mutation = useMutation({
     mutationFn: (formData) => {
       if (formType === 'login') {
+        var object = {}
+        formData.forEach((value, key) => (object[key] = value))
+
         return AdminAuthAPI.loginAccountAdmin(formData)
       } else if (formType === 'forgotPassword') {
         return AdminAuthAPI.forgotPassword(formData)
@@ -44,18 +46,19 @@ export default function AdminLogin() {
 
   const handleLoginSubmit = (data) => {
     if (data.status >= 400) {
-      throw new Error(data.messages)
+      throw new Error(data.message)
     }
-
-    const { admin_avatar, admin_fullname, role, email } = data.data
+    const response_data = data.data
+    const { access_token, refresh_token, user } = response_data
+    const { avatarUrl, username, Roles: role, email } = user
     const adminData = {
-      admin_avatar,
-      admin_fullname,
+      avatarUrl,
+      username,
       role,
       email
     }
 
-    login(adminData, data.data.access_token)
+    login(adminData, access_token)
     localStorage.setItem('profile', JSON.stringify(adminData))
     toast.success('Đăng nhập thành công')
     navigate('/admin')
@@ -72,11 +75,10 @@ export default function AdminLogin() {
     setMessageResult('Verify email has been sent to your email!')
   }
 
-  const onSubmit = handleSubmit((data) => {
+  const onFormSubmit = handleSubmit((data) => {
     // gửi lên api data
     setLoading(true)
     const formData = new FormData()
-
     if (formType === 'login') {
       formData.append('email', data.email)
       formData.append('password', data.password)
@@ -147,7 +149,7 @@ export default function AdminLogin() {
       {contextHolder}
       <Spin spinning={loading} tip='Loading...' size='large' fullscreen />
       <div className='bg-[rgb(14,8,33,0.8)] rounded-xl border-[0.188rem] border-solid border-[rgb(179,103,214,0.2)] backdrop-blur-0 w-[28.125rem] animate-slideUp mx-5'>
-        <form action='' onSubmit={onSubmit} noValidate>
+        <form action='' onSubmit={onFormSubmit} noValidate>
           {formType === 'forgotPassword' ? (
             <div className='text-[#fff] flex flex-col justify-end p-7 gap-6'>
               <h1 className='text-3xl text-center text-[#ffff] font-semibold'>Forgot Password</h1>

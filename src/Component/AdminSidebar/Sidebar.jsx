@@ -134,10 +134,10 @@ const Sidebar = forwardRef((_, ref) => {
         navigate('/admin/login')
         return
       }
-      setAdminFullName(data.admin_fullname)
+      setAdminFullName(data.username)
       setEmail(data.email)
-      setAvatar(data.admin_avatar)
-      setAdminRole(data.role ? data.role.charAt(0).toUpperCase() + data.role.slice(1) : 'Admin')
+      setAvatar(data.avatarUrl)
+      setAdminRole(data.role ? data.role.charAt(0).toUpperCase() + data.role.slice(1) : 'admin')
     } catch (err) {}
   }
 

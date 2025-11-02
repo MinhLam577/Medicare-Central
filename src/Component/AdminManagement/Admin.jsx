@@ -95,15 +95,15 @@ const Admin = () => {
     },
     {
       title: 'Full name',
-      dataIndex: 'admin_fullname',
-      key: 'admin_fullname',
+      dataIndex: 'username',
+      key: 'username',
       width: '20%',
-      sorter: (a, b) => a.admin_fullname.localeCompare(b.admin_fullname),
+      sorter: (a, b) => a.username.localeCompare(b.username),
       ellipsis: true,
       render: (text, record) => (
         <div className='flex items-center gap-x-2 justify-start'>
           <img
-            src={record.admin_avatar ? record.admin_avatar : '/assets/images/default-avatar.png'}
+            src={record.avatarUrl ? record.avatarUrl : '/assets/images/default-avatar.png'}
             alt={text}
             className='w-[48px] h-[48px] object-cover rounded-full'
             onError={(e) => {
@@ -360,8 +360,7 @@ const Admin = () => {
       }
       const result = data.filter((item) => {
         const matchesAdminFullName =
-          item.admin_fullname.toLowerCase().includes(searchValue.toLowerCase()) ||
-          item.admin_id.toString() === searchValue
+          item.username.toLowerCase().includes(searchValue.toLowerCase()) || item.admin_id.toString() === searchValue
         const matchesAdminEmail = item.email.toLowerCase().includes(searchValue.toLowerCase())
         const matchesRole = selectedRoles !== undefined ? item.role_id === selectedRoles : true
         const matchesStatus = selectedAdminStatus !== undefined ? item.admin_is_delete === selectedAdminStatus : true
@@ -523,8 +522,8 @@ const Admin = () => {
     setSelectedFile(null)
   }
 
-  const handleErrorFullName = (admin_fullname) => {
-    if (admin_fullname === '') {
+  const handleErrorFullName = (username) => {
+    if (username === '') {
       setErrorAdminFullName('Full name is required')
       return false
     }
@@ -614,17 +613,17 @@ const Admin = () => {
     e.preventDefault()
     setSubmitLoading(true)
     const formData = new FormData()
-    const admin_fullname = adminFullName
+    const username = adminFullName
     const adminEmail = email
     const isValidEmail = handleErrorEmail(adminEmail)
-    const isValidFullName = handleErrorFullName(admin_fullname)
+    const isValidFullName = handleErrorFullName(username)
     if (!isValidEmail || !isValidFullName) {
       setSubmitLoading(false)
       return
     }
-    formData.append('admin_fullname', adminFullName)
+    formData.append('username', adminFullName)
     formData.append('email', adminEmail)
-    if (selectedFile) formData.append('admin_avatar', selectedFile)
+    if (selectedFile) formData.append('avatarUrl', selectedFile)
     let response = null
     try {
       if (typeModal === 'add') {
@@ -891,14 +890,14 @@ const Admin = () => {
           <form action='' method='POST' onSubmit={handleSubmit} autoComplete='off'>
             <div className='AddCategoryForm__row'>
               <div className='AddCategoryForm__group AddCategoryForm__WidthFull relative'>
-                <label htmlFor='admin_avatar' className='AddCategoryForm__label mb-1'>
+                <label htmlFor='avatarUrl' className='AddCategoryForm__label mb-1'>
                   Avatar (only *.jpeg, *.jpg, *.png, *.gif and *.svg)
                 </label>
                 <input
                   type='file'
                   accept='image/jpg, image/jpeg, image/png, image/gif, image/svg'
-                  name='admin_avatar'
-                  id='admin_avatar'
+                  name='avatarUrl'
+                  id='avatarUrl'
                   className='hidden'
                   placeholder='Choose file'
                   onChange={handleUploadAvatar}
@@ -917,7 +916,7 @@ const Admin = () => {
                   <div className='' onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
                     <button
                       type='button'
-                      onClick={() => document.getElementById('admin_avatar').click()}
+                      onClick={() => document.getElementById('avatarUrl').click()}
                       className='AddCategoryForm__uploadBtn'
                       style={{
                         border: Avatar !== null ? 'None' : '3px dashed #e8ebed'
@@ -944,7 +943,7 @@ const Admin = () => {
             </div>
             <div className='AddCategoryForm__row'>
               <div className='AddCategoryForm__group AddCategoryForm__WidthFull'>
-                <label htmlFor='admin_fullname' className='AddCategoryForm__label'>
+                <label htmlFor='username' className='AddCategoryForm__label'>
                   <span className='text-[red]'>* </span>Full Name
                 </label>
                 <Tooltip
@@ -958,8 +957,8 @@ const Admin = () => {
                 >
                   <input
                     type='text'
-                    name='admin_fullname'
-                    id='admin_fullname'
+                    name='username'
+                    id='username'
                     className='AddCategoryForm__input'
                     placeholder='Lam Nhat Minh'
                     value={adminFullName}

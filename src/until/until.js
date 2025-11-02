@@ -7,7 +7,7 @@ class Http {
   constructor() {
     this.accessToken = getAccessToken()
     this.instance = axios.create({
-      baseURL: 'https://lucifernsz.com/PBL6-BE/public/api/',
+      baseURL: 'http://localhost:9000/api/v1',
 
       timeout: 10000,
       headers: {
@@ -16,7 +16,6 @@ class Http {
     })
     this.instance.interceptors.request.use(
       (config) => {
-        console.log(config)
         if (this.accessToken && config.headers) {
           // header có thể undified -> kick chuột vô nó
           //authorization : viết đúng định dạng để server chấp nhận
@@ -25,7 +24,6 @@ class Http {
           return config
         }
         if (config.data instanceof FormData) {
-          console.log(config.data)
           config.headers['Content-Type'] = 'multipart/form-data' // Nếu là form-data thì đổi header
         }
         return config
@@ -48,13 +46,9 @@ class Http {
             saveProfile(response.data.data)
           }
         }
-        console.log(response)
         return response
       },
       function (error) {
-        console.log(error.status)
-        console.log(error.response.status)
-
         if (error.response.status === 401) {
           clearAll()
         }

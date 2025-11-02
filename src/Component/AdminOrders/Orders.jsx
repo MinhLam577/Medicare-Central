@@ -232,54 +232,6 @@ const Orders = () => {
         )
       }
     },
-    // {
-    //   title: 'Delivery status',
-    //   dataIndex: 'delivery_status',
-    //   key: 'delivery_status',
-    //   showSorterTooltip: {
-    //     title: 'Delivery status',
-    //     placement: 'topLeft',
-    //     trigger: ['hover']
-    //   },
-    //   sorter: (a, b) => a.delivery_status.localeCompare(b.delivery_status),
-    //   ellipsis: true,
-    //   render: (text, record) => {
-    //     let color
-    //     let backgroundColor
-    //     let borderColor
-    //     let status = record.order_status
-    //     switch (status) {
-    //       case 'delivered':
-    //         color = '#065F46'
-    //         backgroundColor = '#D1FAE5'
-    //         borderColor = '#6EE7B7'
-    //         break
-    //       case 'cancelled':
-    //         borderColor = '#FCA5A5'
-    //         backgroundColor = '#FEE2E2'
-    //         color = '#991B1B'
-    //         break
-    //       case 'shipped':
-    //         borderColor = '#D1D5DB'
-    //         backgroundColor = '#F3F4F6'
-    //         color = '#1F2937'
-    //         break
-    //       case 'pending':
-    //         color = '#1E40AF'
-    //         backgroundColor = '#DBEAFE'
-    //         borderColor = '#93C5FD'
-    //         break
-    //     }
-    //     return (
-    //       <span
-    //         style={{ color, backgroundColor, border: `1px solid ${borderColor}` }}
-    //         className='inline-block justify-center items-center py-[2px] px-[10px] rounded whitespace-nowrap text-xs'
-    //       >
-    //         {status}
-    //       </span>
-    //     )
-    //   }
-    // },
     {
       title: 'Order Status',
       dataIndex: 'order_status',

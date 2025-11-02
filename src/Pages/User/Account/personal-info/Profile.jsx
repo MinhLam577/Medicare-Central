@@ -11,7 +11,6 @@ export default function Profile() {
   const [previewImage, setPreviewImage] = useState(null) // Lưu URL của ảnh preview
 
   const { isProfile, setProfile } = useContext(AuthContext)
-  console.log(isProfile)
   const [formData, setFormData] = useState({
     user_fullname: '',
     user_phone: '', // or null, depending on your form requirements
@@ -60,7 +59,6 @@ export default function Profile() {
         return
       }
     }
-    console.log(File)
     if (File) {
       const previewUrl = URL.createObjectURL(File) // Tạo URL tạm thời cho ảnh
       setPreviewImage(previewUrl)
@@ -129,13 +127,9 @@ export default function Profile() {
     muTateUpdateProfile.mutate(formDataToSend, {
       onSuccess: (data) => {
         setProfile(data?.data?.data)
-        console.log(data)
         toast.success('Cập nhật Tài khoản thành công ')
       }
     })
-    // muTateUpdateProfile.mutate(formDataToSend)
-    console.log('Dữ liệu gửi:', Object.fromEntries(formDataToSend))
-    // Gửi formDataToSend qua API
   }
 
   return (
