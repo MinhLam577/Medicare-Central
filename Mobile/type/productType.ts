@@ -1,0 +1,38 @@
+export interface ProductType {
+    product_id: number;
+    brand_id: number;
+    category_id: number;
+    product_name: string;
+    product_price: string;
+    product_discount: string | null;
+    product_images: string[] | null;
+    product_quantity: number;
+    product_sold: number;
+    product_package: string | null;
+    product_ingredients: string | null;
+    dosage_form: string | null;
+    product_uses: string | null;
+    specification: string | null;
+    product_notes: string | null;
+    place_of_manufacture: string | null;
+    manufacturer: string | null;
+    product_description: string | null;
+    product_is_delete: number;
+    product_created_at: string;
+    product_updated_at: string;
+    category_name: string;
+    category_thumbnail: string;
+    category_parent_id: number;
+    category_type: string;
+    category_description: string | null;
+    category_is_delete: number;
+    category_created_at: string;
+    category_updated_at: string;
+    brand_name: string;
+    brand_logo: string;
+    brand_description: string | null;
+    brand_is_delete: number;
+    brand_created_at: string;
+    brand_updated_at: string;
+    parent_category_name: string;
+}
